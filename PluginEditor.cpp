@@ -7,14 +7,17 @@ AudioFilePlayerProcessorEditor::AudioFilePlayerProcessorEditor (AudioFilePlayerA
 {
     addAndMakeVisible(&openButton);
     openButton.setButtonText("Open file...");
+    openButton.onClick = [this] { openButtonClicked(); };
 
     addAndMakeVisible(&playButton);
     playButton.setButtonText("Play");
+    playButton.onClick = [this] { playButtonClicked(); };
     playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
     playButton.setEnabled(false);
 
     addAndMakeVisible(&stopButton);
     stopButton.setButtonText("Stop");
+    stopButton.onClick = [this] { stopButtonClicked(); };
     stopButton.setColour(juce::TextButton::buttonColourId, juce::Colours::red);
     stopButton.setEnabled(false);
 
@@ -86,4 +89,16 @@ void AudioFilePlayerProcessorEditor::changeListenerCallback(juce::ChangeBroadcas
         else
             changeState(Stopped);
     }
+}
+
+void AudioFilePlayerProcessorEditor::openButtonClicked() {
+    //...
+}
+
+void AudioFilePlayerProcessorEditor::playButtonClicked() {
+    changeState(Starting);
+}
+
+void AudioFilePlayerProcessorEditor::stopButtonClicked() {
+    changeState(Stopping);
 }

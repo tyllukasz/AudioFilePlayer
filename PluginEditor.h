@@ -38,6 +38,10 @@ private:
     juce::AudioTransportSource transportSource;
     TransportState state;
 
+    void openButtonClicked();
+    void playButtonClicked();
+    void stopButtonClicked();
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     AudioFilePlayerAudioProcessor& processorRef;
