@@ -78,3 +78,12 @@ void AudioFilePlayerProcessorEditor::changeState(TransportState newState) {
         }
     }
 }
+
+void AudioFilePlayerProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster *source) {
+    if (source == &transportSource) {
+        if (transportSource.isPlaying())
+            changeState(Playing);
+        else
+            changeState(Stopped);
+    }
+}

@@ -24,7 +24,7 @@ public:
     void resized() override;
 
     void changeState(TransportState newState);
-
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
 private:
     juce::TextButton openButton;
