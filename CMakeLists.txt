@@ -60,7 +60,7 @@ juce_add_plugin(AudioFilePlayer
 # include all your JUCE module headers; if you're happy to include module headers directly, you
 # probably don't need to call this.
 
-# juce_generate_juce_header(AudioPluginExample)
+juce_generate_juce_header(AudioFilePlayer)
 
 # `target_sources` adds source files to a target. We pass the target that needs the sources as the
 # first argument, then a visibility parameter for the sources which should normally be PRIVATE.
@@ -104,7 +104,11 @@ target_compile_definitions(AudioFilePlayer
 target_link_libraries(AudioFilePlayer
     PRIVATE
         # AudioPluginData           # If we'd created a binary data target, we'd link to it here
+        juce::juce_audio_basics
+        juce::juce_audio_devices
+        juce::juce_audio_formats
         juce::juce_audio_utils
+
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

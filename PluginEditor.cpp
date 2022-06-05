@@ -3,22 +3,29 @@
 
 //==============================================================================
 AudioFilePlayerProcessorEditor::AudioFilePlayerProcessorEditor (AudioFilePlayerAudioProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+    : AudioProcessorEditor (&p), state(Stopped), processorRef (p)
 {
     addAndMakeVisible(&openButton);
     openButton.setButtonText("Open file...");
 
     addAndMakeVisible(&playButton);
     playButton.setButtonText("Play");
+    playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
+    playButton.setEnabled(false);
 
     addAndMakeVisible(&stopButton);
     stopButton.setButtonText("Stop");
+    stopButton.setColour(juce::TextButton::buttonColourId, juce::Colours::red);
+    stopButton.setEnabled(false);
 
 
     juce::ignoreUnused (processorRef);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (200, 200);
+
+    formatManager.registerBasicFormats();
+    transportSource.addChangeListener(this);
+
+
 }
 
 AudioFilePlayerProcessorEditor::~AudioFilePlayerProcessorEditor()
@@ -31,13 +38,43 @@ void AudioFilePlayerProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void AudioFilePlayerProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    // subcomponents in your editor...
+    int margin = 10;
+    int button_height = (getHeight() - 4 * margin) / 3;
+    int button_width = getWidth() - 2 * margin;
+    openButton.setBounds(margin, margin, button_width, button_height);
+    playButton.setBounds(margin, 2 * margin + button_height, button_width, button_height);
+    stopButton.setBounds(margin, 3 * margin + 2 * button_height, button_width, button_height);
+}
+
+void AudioFilePlayerProcessorEditor::changeState(TransportState newState) {
+    if (state != newState) {
+        state = newState;
+
+        switch (state) {
+            case Stopped:
+                stopButton.setEnabled(false);
+                playButton.setEnabled(true);
+                transportSource.setPosition(0.0);
+                break;
+
+            case Starting:
+                playButton.setEnabled(false);
+                transportSource.start();
+                break;
+
+            case Playing:
+                stopButton.setEnabled(true);
+                break;
+
+            case Stopping:
+                transportSource.stop();
+                break;
+        }
+    }
 }
