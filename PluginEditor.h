@@ -3,20 +3,24 @@
 #include "PluginProcessor.h"
 
 //==============================================================================
-class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
+class AudioFilePlayerProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    explicit AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor&);
-    ~AudioPluginAudioProcessorEditor() override;
+    explicit AudioFilePlayerProcessorEditor (AudioFilePlayerAudioProcessor&);
+    ~AudioFilePlayerProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
+    juce::TextButton openButton;
+    juce::TextButton playButton;
+    juce::TextButton stopButton;
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    AudioPluginAudioProcessor& processorRef;
+    AudioFilePlayerAudioProcessor& processorRef;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioFilePlayerProcessorEditor)
 };
